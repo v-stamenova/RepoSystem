@@ -1,0 +1,106 @@
+﻿@inject Services.DelivererService delivererService
+
+@model RepoSystemWeb.Models.SearchModel.DeliverySearch
+
+<body class="light-background">
+	<div class="row py-5 px-4">
+		<div class="col-md-10 mx-auto" id="view">
+			<table class="table rounded-pill filter-heading">
+				<thead>
+					<tr>
+						<form asp-action="Search" asp-controller="Delivery" method="get">
+							<th scope="col" class="col-3" style="padding-bottom: 20px;">
+								<input asp-for="Item" class="form-control dark-heading rounded-pill" placeholder="Име на стоката..." />
+							</th>
+							<th scope="col" class="col-3" style="padding-bottom: 20px;">
+								<select asp-for="Deliverer" class="form-control rounded-pill">
+									<option selected>Доставчик...</option>
+									@foreach (Deliverer deliverer in delivererService.GetDeliverers())
+									{
+										<option>@deliverer.Name</option>
+									}
+								</select>
+							</th>
+							<th scope="col" style="padding-bottom: 20px;">
+								<input type="date" autocomplete="off" id="begin" class="form-control" placeholder="yyyy-mm-dd" asp-for="Date" />
+							</th>
+							<th scope="col">
+								<button type="submit" class="btn">
+									<svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="white" class="bi bi-search" viewBox="0 0 16 16" style="margin-bottom: 15px;">
+										<path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+									</svg>
+								</button>
+							</th>
+						</form>
+						@if (Logged.IsLogged())
+						{
+							<th scope="col" class="col-4 align-items-center">
+								<div class="container">
+									<a asp-controller="Delivery" asp-action="Create" class="btn btn-font btn-reverse-info" style="margin-bottom: 8px;">
+										Новa доставка
+									</a>
+								</div>
+							</th>
+						}
+					</tr>
+				</thead>
+			</table>
+			<table class="table rounded-pill result-table">
+				<tbody>
+					@foreach (var delivery in Model.Result)
+					{
+						<tr style="padding: 30px;">
+							<td class="col-2">
+								<a asp-action="Details" asp-controller="Delivery" asp-route-id="@delivery.Id">
+									<div class="bg-white rounded-pill p-2 text-center">
+										<h5 class="dark-heading">@delivery.Item</h5>
+									</div>
+								</a>
+							</td>
+							<td class="col-2">
+								<a asp-action="Details" asp-controller="Delivery" asp-route-id="@delivery.Id">
+									<div class="bg-white rounded-pill p-2 text-center">
+										<h5 class="dark-heading">@delivery.Deliverer.Name</h5>
+									</div>
+								</a>
+							</td>
+							<td class="col-2">
+								<a asp-action="Details" asp-controller="Delivery" asp-route-id="@delivery.Id">
+									<div class="bg-white rounded-pill p-2 text-center">
+										<h5 class="dark-heading">@delivery.Date.ToShortDateString()</h5>
+									</div>
+								</a>
+							</td>
+							@if (Logged.IsLogged())
+							{
+								<td class="col-2 align-items-center text-center">
+									<div>
+										<a asp-controller="Delivery" asp-action="Delete" asp-route-id="@delivery.Id">
+											<svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-backspace-fill edit-delete" viewBox="0 0 16 16">
+												<path d="M15.683 3a2 2 0 0 0-2-2h-7.08a2 2 0 0 0-1.519.698L.241 7.35a1 1 0 0 0 0 1.302l4.843 5.65A2 2 0 0 0 6.603 15h7.08a2 2 0 0 0 2-2V3zM5.829 5.854a.5.5 0 1 1 .707-.708l2.147 2.147 2.146-2.147a.5.5 0 1 1 .707.708L9.39 8l2.146 2.146a.5.5 0 0 1-.707.708L8.683 8.707l-2.147 2.147a.5.5 0 0 1-.707-.708L7.976 8 5.829 5.854z" />
+											</svg>
+										</a>
+										<a asp-controller="Delivery" asp-action="Edit" asp-route-id="@delivery.Id">
+											<svg xmlns="http://www.w3.org/2000/svg" fill="white" class="bi bi-pen-fill edit-delete" viewBox="0 0 16 16">
+												<path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001z" />
+											</svg>
+										</a>
+									</div>
+								</td>
+							}
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+<script>
+	$(function () {
+		$('.dates #begin').datepicker({
+			'format': 'yyyy-mm-dd',
+			'autoclose': true
+		});
+	});
+</script>

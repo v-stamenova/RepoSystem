@@ -1,0 +1,53 @@
+﻿<div class="light-background no-padding">
+	<div class="container p-5">
+		<div class="jumbotron" style="background-color: transparent;">
+			<div class="row">
+				<div class="col-5">
+					<div class="container" style="margin-top: 70px;">
+						<div class="col">
+							<h1 id="ultraBig" class="dark-heading">RepoSystem</h1>
+							<hr />
+							@if (Logged.User is null)
+							{
+								<a asp-action="Login" asp-controller="User" id="logIn" class="btn btn-info btn-lg btn-font">Вход</a>
+							}
+							else if (Logged.User.Username == "Admin")
+							{
+								<div>
+									<a asp-action="Create" asp-controller="User" class="btn btn-info btn-lg btn-font">Нов служител</a>
+								</div>
+								<div class="pt-2">
+									<a asp-action="Index" asp-controller="Delivery" class="btn btn-info btn-lg btn-font">Складова наличност</a>
+								</div>
+							}
+							else
+							{
+								<a asp-action="Index" asp-controller="Delivery" class="btn btn-info btn-lg btn-font">Складова наличност</a>
+							}
+						</div>
+					</div>
+				</div>
+				<div class="col" id="bannerCol">
+					<div class="container-sm">
+						<img id="banner" class="float-right img-fluid" src="~/images/banner.svg" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="dark-background no-padding" style="margin-bottom: 50px !important;">
+	<div class="container p-3">
+		<div class="jumbotron dark-background">
+			<div class="row">
+				<div class="col light-heading">
+					<h3 class="py-3">Какво е RepoSystem?</h3>
+					<h4>
+						RepoSystem е система за управление на складовата наличност в даден склад.
+						Уеб приложението е разработено за Националното състезание {Програмиране[] на С#}.
+					</h4>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,117 @@
+﻿@model RepoSystemWeb.Models.CreateDeliveryViewModel
+
+@inject Services.UnitService unitService
+@inject Services.DelivererService delivererService
+
+<body class="light-background">
+	<div class="container pb-5">
+		<div class="row justify-content-center lower">
+			<div class="col-md-6 register-form-bg rounded">
+				<form asp-action="Create" asp-controller="Delivery" method="post" enctype="multipart/form-data">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="form-group text-center">
+						<h2 class="dark-heading b">Добавете доставка</h2>
+						<br />
+						<div asp-validation-summary="All" class="text-danger"></div>
+					</div>
+					<div class="form-group">
+						<label class="control-label dark-heading">Име на стока</label>
+						<input class="form-control dark-heading" asp-for="Item">
+					</div>
+					<div class="form-group">
+						<label class="control-label dark-heading">Мерна единица</label>
+						<select class="form-control dark-heading" id="unitSelect" asp-for="MeasurementUnitSelect">
+							@foreach (Unit unit in unitService.GetUnits())
+							{
+								<option>@unit.Name</option>
+							}
+						</select>
+					</div>
+					<div class="form-group big-checkbox" onclick="moreUnits()">
+						<div class="form-check custom-checkbox">
+							<input class="form-check-input custom-control-input" type="checkbox" asp-for="NewMeasurementUnit" id="enoughUnits">
+							<label class="form-check-label dark-heading custom-control-label" for="enoughUnits">
+								Мерната единица липсва?
+							</label>
+						</div>
+					</div>
+					<div class="form-group" id="addUnit" style="display: none">
+						<label class="control-label dark-heading">Въведете нова мерна единица</label>
+						<input class="form-control dark-heading" asp-for="MeasurementUnitText">
+					</div>
+					<div class="form-group">
+						<label class="control-label dark-heading">Количество</label>
+						<input class="form-control dark-heading" type="number" step="any" asp-for="Quantity">
+					</div>
+					<div class="form-group">
+						<label class="control-label dark-heading">Единична цена</label>
+						<input class="form-control dark-heading" type="number" step="any" asp-for="PricePer">
+					</div>
+					<div class="form-group">
+						<label class="control-label dark-heading">Доставчик</label>
+						<select class="form-control dark-heading" id="delivererSelect" asp-for="DelivererSelect">
+							@foreach (Deliverer deliverer in delivererService.GetDeliverers())
+							{
+								<option>@deliverer.Name</option>
+							}
+						</select>
+					</div>
+					<div class="form-group big-checkbox" onclick="moreDeliverers()">
+						<div class="form-check custom-checkbox">
+							<input class="form-check-input custom-control-input" type="checkbox" asp-for="NewDeliverer"  id="enoughDeliverers">
+							<label class="form-check-label dark-heading custom-control-label" for="enoughDeliverers">
+								Доставчикът липсва?
+							</label>
+						</div>
+					</div>
+					<div class="form-group" id="addDeliverer" style="display: none">
+						<label class="control-label dark-heading">Въведете нов доставчик</label>
+						<input class="form-control dark-heading" asp-for="DelivererText">
+					</div>
+					<div class="form-group">
+						<label class="control-label dark-heading">Дата на доставката</label>
+						<input type="date" autocomplete="off" id="begin" class="form-control" placeholder="yyyy-mm-dd" asp-for="Date" />
+					</div>
+					<div class="form-group align-items-center text-center">
+						<input type="submit" value="Добави" class="btn btn-lg btn-info rounded" />
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+
+<script>
+	let unitCheckBox = document.getElementById('enoughUnits');
+	let unitTextBox = document.getElementById('addUnit')
+
+	function moreUnits() {
+		if (unitCheckBox.checked) {
+			unitCheckBox.checked = false;
+			unitTextBox.style.display = "none";
+		} else {
+			unitCheckBox.checked = true;
+			unitTextBox.style.display = "block";
+		}
+	}
+
+	let delivererCheckBox = document.getElementById('enoughDeliverers');
+	let delivererTextBox = document.getElementById('addDeliverer')
+
+	function moreDeliverers() {
+		if (delivererCheckBox.checked) {
+			delivererCheckBox.checked = false;
+			delivererTextBox.style.display = "none";
+		} else {
+			delivererCheckBox.checked = true;
+			delivererTextBox.style.display = "block";
+		}
+	}
+
+	$(function () {
+		$('.dates #begin').datepicker({
+			'format': 'yyyy-mm-dd',
+			'autoclose': true
+		});
+	});
+</script>
