@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql.EntityFrameworkCore;
 
 namespace RepoSystemWeb
 {
@@ -37,11 +38,11 @@ namespace RepoSystemWeb
 			if (Test.IsServerConnected(Configuration.GetConnectionString("Connection")))
 			{
 				services.AddDbContext<RepoDbContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("Connection")));
+					options.UseMySQL(Configuration.GetConnectionString("Connection")));
 			}
 			else
 			{
-				throw new Exception("Връзката със сървъра не е осъществена успешно");
+				throw new Exception("No connection with server");
 			}
 		}
 
