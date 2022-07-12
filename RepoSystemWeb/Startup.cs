@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MySql.EntityFrameworkCore;
 
 namespace RepoSystemWeb
 {
@@ -34,15 +35,9 @@ namespace RepoSystemWeb
 			services.AddTransient<DeliveryService>();
 			services.AddTransient<UnitService>();
 
-			if (Test.IsServerConnected(Configuration.GetConnectionString("Connection")))
-			{
-				services.AddDbContext<RepoDbContext>(options =>
-					options.UseSqlServer(Configuration.GetConnectionString("Connection")));
-			}
-			else
-			{
-				throw new Exception("Връзката със сървъра не е осъществена успешно");
-			}
+			services.AddDbContext<RepoDbContext>(options =>
+					options.UseMySQL(Configuration.GetConnectionString("Connection")));
+		
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
