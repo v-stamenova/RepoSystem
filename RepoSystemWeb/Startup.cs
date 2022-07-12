@@ -35,15 +35,9 @@ namespace RepoSystemWeb
 			services.AddTransient<DeliveryService>();
 			services.AddTransient<UnitService>();
 
-			if (Test.IsServerConnected(Configuration.GetConnectionString("Connection")))
-			{
-				services.AddDbContext<RepoDbContext>(options =>
+			services.AddDbContext<RepoDbContext>(options =>
 					options.UseMySQL(Configuration.GetConnectionString("Connection")));
-			}
-			else
-			{
-				throw new Exception("No connection with server");
-			}
+		
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
